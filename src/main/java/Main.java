@@ -12,7 +12,6 @@ public class Main {
     static final String DB_PASSWORD = "0000";
     static Connection con;
     public static void main(String[] args) {
-
         try {
             con = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
@@ -20,21 +19,20 @@ public class Main {
         }
         System.out.println("1 - Add apartment");
         System.out.println("2 - Search apartment");
-        Scanner sc = new Scanner(System.in);
-        int v  = sc.nextInt();
-        if( v == 1){
-            addApartment();
-        }else if(v == 2){
-            serch();
-        }else{
-            System.out.println("error comand");
+        System.out.println("0 - Exit");
+        while (true){
+            Scanner sc = new Scanner(System.in);
+            int v  = sc.nextInt();
+            if( v == 1){
+                addApartment();
+            }else if(v == 2){
+                serch();
+            }else if (v == 0){
+                break;
+            }else{
+                System.out.println("error command");
+            }
         }
-
-
-
-
-
-
     }
     private static void addApartment(){
         Scanner sc = new Scanner(System.in);
@@ -48,7 +46,7 @@ public class Main {
         int rooms = sc.nextInt();
         System.out.println("Enter price");
         int price = sc.nextInt();
-        sc.close();
+
         try {
             Statement st = con.createStatement();
             st.execute("insert into apartments values('" + region + "', '" + adress + "', " + area + ", " +
@@ -56,6 +54,7 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Succesfull");
     }
     private static void serch(){
         try {
