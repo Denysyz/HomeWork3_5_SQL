@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-/**
- * Created by dende on 04.11.2016.
- */
 public class Main {
     static final String DB_CONNECTION = "jdbc:mysql://localhost:3306/mydb";
     static final String DB_USER = "root";
@@ -20,9 +17,10 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println("1 - Add apartment");
-        System.out.println("2 - Search apartment");
+        System.out.println("2 - Show apartments");
         System.out.println("3 - Sort Max to Min");
         System.out.println("4 - Sort Min to Max");
+        System.out.println("5 - Search apartments");
         System.out.println("0 - Exit");
         while (true){
             Scanner sc = new Scanner(System.in);
@@ -35,6 +33,8 @@ public class Main {
                 sort("max");
             }else if(v == 4){
                 sort("min");
+            }else if(v == 5){
+                search();
             }else if (v == 0){
                 System.out.println("Exit!!!");;
                 break;
@@ -107,5 +107,30 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    private static void search(){
+        boolean exist = false;
+        System.out.println("Enter region");
+        Scanner sc = new Scanner(System.in);
+        String reg = sc.nextLine();
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM apartments");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if(rs.getString(1).equals(reg)){
+                    exist = true;
+                    for(int i = 1;i <= 5; i++){
+                        System.out.print(rs.getString(i) + ", ");
+                    }
+                    System.out.println();
+                }
+            }
+            if(!exist){
+                System.out.println("Not found!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
